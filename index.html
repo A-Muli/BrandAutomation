@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Naivas Brand Ambassador Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #f58220; /* Naivas orange */
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+    }
+    header img {
+      height: 50px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    header p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    .container {
+      width: 90%;
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      border-top: 5px solid #007a33; /* Naivas green */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #007a33;
+    }
+    form {
+      display: grid;
+      gap: 1rem;
+    }
+    label {
+      font-weight: bold;
+      color: #333;
+    }
+    input, select, button {
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    button {
+      background: #007a33; /* Naivas green */
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005d27;
+    }
+    .calendar {
+      margin-top: 2rem;
+    }
+    .calendar table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .calendar th, .calendar td {
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid #ddd;
+      cursor: pointer;
+    }
+    .booked {
+      background: #f58220; /* Naivas orange for booked */
+      color: white;
+      cursor: not-allowed;
+    }
+    .available {
+      background: #007a33; /* Naivas green for available */
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <img src="images/logo.png" alt="Naivas Logo">
+      <div>
+        <h1>Naivas Brand Ambassador Portal</h1>
+        <p>Book and manage store activations with ease</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <h2>Activation Request Form</h2>
+    <form id="activationForm">
+      <label>Supplier Name: <input type="text" id="supplierName" required></label>
+      <label>Contact Number: <input type="tel" id="contactNumber" required></label>
+      <label>Email: <input type="email" id="email" required></label>
+      <label>Product Name: <input type="text" id="productName" required></label>
+      <label>Category: 
+        <select id="category" required>
+          <option value="">Select Category</option>
+          <option value="Beverages">Grocery 1</option>
+          <option value="Snacks">Grocery 2</option>
+          <option value="Cosmetics">Non Food</option>
+          <option value="Cosmetics">Electronics</option>
+        </select>
+      </label>
+      <label>Store Name: <input type="text" id="storeName" required></label>
+      <label>Number of Ambassadors: <input type="number" id="ambassadors" min="1" required></label>
+      <label>Preferred Date: <input type="date" id="activationDate" required></label>
+      <button type="submit">Submit Request</button>
+    </form>
+
+    <div class="calendar">
+      <h2>Activation Calendar</h2>
+      <table id="calendarTable"></table>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("activationForm");
+    const calendarTable = document.getElementById("calendarTable");
+
+    // Store activations locally (simulate DB)
+    let activations = JSON.parse(localStorage.getItem("activations")) || [];
+
+    // Save activation
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = {
+        supplier: document.getElementById("supplierName").value,
+        contact: document.getElementById("contactNumber").value,
+        email: document.getElementById("email").value,
+        product: document.getElementById("productName").value,
+        category: document.getElementById("category").value,
+        store: document.getElementById("storeName").value,
+        ambassadors: document.getElementById("ambassadors").value,
+        date: document.getElementById("activationDate").value
+      };
+
+      // Prevent double-booking same store & category
+      const conflict = activations.find(a => a.store === data.store && a.date === data.date && a.category === data.category);
+      if (conflict) {
+        alert("Conflict detected! A competing brand already booked this store for that date.");
+        return;
+      }
+
+      activations.push(data);
+      localStorage.setItem("activations", JSON.stringify(activations));
+      alert("Activation request submitted!");
+      renderCalendar();
+      form.reset();
+    });
+
+    // Render calendar (current month)
+    function renderCalendar() {
+      const now = new Date();
+      const month = now.getMonth();
+      const year = now.getFullYear();
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month+1, 0).getDate();
+
+      let html = "<tr>";
+      const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      for (let d of days) html += `<th>${d}</th>`;
+      html += "</tr><tr>";
+
+      // empty cells before first day
+      for (let i=0; i<firstDay; i++) html += "<td></td>";
+
+      // days
+      for (let day=1; day<=daysInMonth; day++) {
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const isBooked = activations.some(a => a.date === dateStr);
+
+        html += `<td class="${isBooked ? 'booked' : 'available'}">${day}</td>`;
+        if ((day+firstDay) % 7 === 0) html += "</tr><tr>";
+      }
+
+      html += "</tr>";
+      calendarTable.innerHTML = html;
+    }
+
+    renderCalendar();
+  </script>
+</body>
+</html>
