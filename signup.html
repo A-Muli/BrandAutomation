@@ -7,19 +7,22 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9fafc;
+      background: url("images/signup.jpg") no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
+
     .signup-container {
-      background: #fff;
+      background: rgba(255, 255, 255, 0.6); /* White with 90% opacity */
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       width: 350px;
     }
+
     h2 { text-align: center; margin-bottom: 1.5rem; color: #333; }
     .form-group { margin-bottom: 1rem; }
     label { display: block; font-size: 0.9rem; margin-bottom: 0.4rem; color: #555; }
@@ -27,15 +30,15 @@
       width: 100%; padding: 0.7rem; border: 1px solid #ccc;
       border-radius: 8px; font-size: 1rem;
     }
-    input:focus { border-color: #007bff; outline: none; }
+    input:focus { border-color: #4bb300; outline: none; }
     .btn {
-      width: 100%; padding: 0.8rem; background: #007bff; color: white;
+      width: 100%; padding: 0.8rem; background: #4bb300; color: white;
       border: none; border-radius: 8px; font-size: 1rem;
       cursor: pointer; transition: 0.3s;
     }
-    .btn:hover { background: #0056b3; }
+    .btn:hover { background: #4bb300; }
     .login-link { margin-top: 1rem; text-align: center; font-size: 0.9rem; }
-    .login-link a { color: #007bff; text-decoration: none; }
+    .login-link a { color: #b38000; text-decoration: none; }
     .login-link a:hover { text-decoration: underline; }
   </style>
 </head>
@@ -45,8 +48,8 @@
     <h2>Create Account</h2>
     <form id="signupForm">
       <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" placeholder="Enter your name" required>
+        <label for="SupplierName">Full Name</label>
+        <input type="text" id="SupplierName" placeholder="Enter your name" required>
       </div>
 
       <div class="form-group">
@@ -55,17 +58,19 @@
       </div>
 
       <div class="form-group">
-        <label for="number"> Phone number</label>
-        <input type="text" id="number" placeholder="Enter your phone number" required>
+        <label for="PhoneNumber">Phone Number</label>
+        <input type="text" id="PhoneNumber" placeholder="Enter your phone number" required>
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="Create a password" required>
       </div>
-      <div class="form-group"> 
-        <label for="confirm-password">Confirm Password</label> 
-        <input type="password" id="confirm-password" placeholder="Confirm password" required> </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" placeholder="Confirm password" required>
+      </div>
 
       <button type="submit" class="btn">Sign Up</button>
 
@@ -81,11 +86,19 @@
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
       const data = {
-        name: document.getElementById("name").value,
+        SupplierName: document.getElementById("SupplierName").value,
         email: document.getElementById("email").value,
-        number: document.getElementById("number").value,
-        password: document.getElementById("password").value
+        PhoneNumber: document.getElementById("PhoneNumber").value,
+        password: password
       };
 
       try {
@@ -96,9 +109,11 @@
         });
 
         const result = await res.json();
+        if (!res.ok) throw new Error(result.message);
         alert(result.message);
+        form.reset();
       } catch (err) {
-        alert("Error submitting form.");
+        alert("Error: " + err.message);
         console.error(err);
       }
     });
