@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Naivas Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .profile-header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #007a33;
+    }
+
+    .profile-header h2 {
+      margin: 0;
+      color: #007a33;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    section h3 {
+      color: #f58220;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    table th, table td {
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .btn {
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-green {
+      background: #007a33;
+      color: white;
+    }
+
+    .btn-green:hover {
+      background: #005d27;
+    }
+
+    .btn-red {
+      background: #c0392b;
+      color: white;
+    }
+
+    .btn-red:hover {
+      background: #922b21;
+    }
+
+    .btn-orange {
+      background: #f58220;
+      color: white;
+    }
+
+    .btn-orange:hover {
+      background: #cc681a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Universal header -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <img src="images/logo.png" alt="Naivas Logo">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="categories.html">Categories</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="profile-container">
+    <!-- Section 1: User Info -->
+    <div class="profile-header">
+      <img src="images/avatar.png" alt="User Avatar">
+      <div>
+        <h2>John Doe</h2>
+        <p>Acme Corp | johndoe@email.com | +254700123456</p>
+      </div>
+    </div>
+
+    <section>
+      <h3>Account Settings</h3>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" value="John Doe">
+      </div>
+      <div class="form-group">
+        <label>Company Name</label>
+        <input type="text" value="Acme Corp">
+      </div>
+      <div class="form-group">
+        <label>Contact Details</label>
+        <input type="text" value="+254700123456">
+      </div>
+      <div class="form-group">
+        <label>Reset Password</label>
+        <input type="password" placeholder="Enter new password">
+      </div>
+      <button class="btn btn-green">Save Changes</button>
+      <button class="btn btn-red">Delete Profile</button>
+    </section>
+
+    <!-- Section 2: Activation Summary -->
+    <section>
+      <h3>Activation Summary</h3>
+      <ul>
+        <li><strong>Upcoming Activations:</strong> 2</li>
+        <li><strong>Past Activations:</strong> 5</li>
+        <li><strong>Pending Approvals:</strong> 1</li>
+      </ul>
+    </section>
+
+    <!-- Section 3: BA Management -->
+    <section>
+      <h3>BA Management</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>ID Number</th>
+            <th>Phone</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jane Mwangi</td>
+            <td>12345678</td>
+            <td>+254712345678</td>
+            <td>Approved</td>
+          </tr>
+          <tr>
+            <td>Peter Otieno</td>
+            <td>87654321</td>
+            <td>+254798765432</td>
+            <td>Pending</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 4: Support & Logout -->
+    <section>
+      <h3>Support</h3>
+      <p>Need help? <a href="mailto:support@naivas.co.ke">Contact us</a></p>
+      <button class="btn btn-orange">Logout</button>
+    </section>
+  </div>
+
+</body>
+</html>
